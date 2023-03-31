@@ -34,5 +34,13 @@ namespace Names
                 inputNames.Clear();
             }
         }
+        private void inputNames_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(inputNames.Text) && !lstNames.Items.Contains(inputNames.Text) && e.Key==Key.Enter)
+            {
+                lstNames.Items.Add(inputNames.Text);
+                inputNames.Clear();
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@
         <Label>Names</Label>
         <ListBox Grid.Row="1" x:Name="lstNames"/>
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
-            <TextBox x:Name="inputNames"></TextBox>
+            <TextBox x:Name="inputNames" KeyDown="inputNames_KeyDown"></TextBox>
             <Button x:Name="addNames" Margin="0,5,0,0" Click="addNames_Click">Add Name</Button>
         </StackPanel>
     </Grid>
