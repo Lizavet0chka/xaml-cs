@@ -98,5 +98,10 @@ namespace Names
                 }
             }
         }
+
+        private void deleteNames_Click(object sender, RoutedEventArgs e)
+        {
+            lstNames.Items.Remove(lstNames.SelectedItem);
+        }
     }
 }
