@@ -91,9 +91,9 @@ namespace Names
             FileStream fs = File.Open(@"Names.dll.txt", FileMode.Open);
             using (var reader = new StreamReader(fs))
             {
-                string? str;
-                while ((str = reader.ReadLine())!=null)
+                while (reader.Peek() >= 0)
                 {
+                    string str = reader.ReadLine() ?? string.Empty;
                     lstNames.Items.Add(str);
                 }
             }
