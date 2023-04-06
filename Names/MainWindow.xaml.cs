@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +24,19 @@ namespace Names
     /// </summary>
     public partial class MainWindow : Window
     {
+        struct Person
+        {
+            public string Vorname;
+            public string Nachname;
+            public int Alter { get; set; }
+            public Person(string vorname, string nachname)
+            {
+                Vorname = vorname;
+                Nachname = nachname;
+                Alter = 0;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,10 +52,50 @@ namespace Names
         }
         private void inputNames_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(inputNames.Text) && !lstNames.Items.Contains(inputNames.Text) && e.Key==Key.Enter)
+            if (!string.IsNullOrWhiteSpace(inputNames.Text) && !lstNames.Items.Contains(inputNames.Text) && e.Key == Key.Enter)
             {
                 lstNames.Items.Add(inputNames.Text);
                 inputNames.Clear();
+            }
+        }
+
+        public void deleteNames_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key==Key.Delete)
+            {
+                lstNames.Items.Remove(lstNames.SelectedItem);
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveData();
+        }
+
+        private void SaveData()
+        {
+            string FileName=Assembly.GetExecutingAssembly().Location+".txt";
+            using (var StringWriter = new StreamWriter(FileName))
+            {
+                foreach(var line in lstNames.Items)
+                    StringWriter.WriteLine(line);
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ReadData();
+        }
+        private void ReadData()
+        {
+            FileStream fs = File.Open(@"Names.dll.txt", FileMode.Open);
+            using (var reader = new StreamReader(fs))
+            {
+                string? str;
+                while ((str = reader.ReadLine())!=null)
+                {
+                    lstNames.Items.Add(str);
+                }
             }
         }
     }
